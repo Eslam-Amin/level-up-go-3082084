@@ -17,7 +17,19 @@ const path = "users.json"
 // getBiggestMarket takes in the slice of users and
 // returns the biggest market.
 func getBiggestMarket(users []User) (string, int) {
-	panic("NOT IMPLEMENTED")
+	marketCounts := make(map[string]int)
+	for _, user := range users {
+		marketCounts[user.Country]++
+	}
+	var maxCountry string
+	maxCount := 0
+	for country, count := range marketCounts {
+		if count > maxCount {
+			maxCount = count
+			maxCountry = country
+		}
+	}
+	return maxCountry, maxCount
 }
 
 func main() {
@@ -35,7 +47,7 @@ func importData() []User {
 		log.Fatal(err)
 	}
 
-	var data []User
+	data := []User{}
 	err = json.Unmarshal(file, &data)
 	if err != nil {
 		log.Fatal(err)
