@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 )
 
@@ -15,7 +16,16 @@ var messages = []string{
 
 // repeat concurrently prints out the given message n times
 func repeat(n int, message string) {
-	panic("NOT IMPLEMENTED")
+	ch := make(chan string)
+	for i := 1; i < n+1; i++ {
+		go func(i int) {
+			ch <- fmt.Sprintf("[G%d]:%s\n", i, message)
+		}(i)
+	}
+
+	for i := 1; i < n+1; i++ {
+		log.Printf(<-ch)
+	}
 }
 
 func main() {
