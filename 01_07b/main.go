@@ -31,15 +31,15 @@ func getOperatorType(op rune) operatorType {
 	return otherOperator
 }
 
-type stack struct {
-	elems []rune
+type stack[T any] struct {
+	elems []T
 }
 
-func (s *stack) push(e rune) {
+func (s *stack[T]) push(e T) {
 	s.elems = append(s.elems, e)
 }
 
-func (s *stack) pop() *rune {
+func (s *stack[T]) pop() *T {
 	if len(s.elems) == 0 {
 		return nil
 	}
@@ -53,7 +53,7 @@ func (s *stack) pop() *rune {
 // isBalanced returns whether the given expression
 // has balanced brackets.
 func isBalanced(expr string) bool {
-	stk := stack{}
+	stk := stack[rune]{}
 	for _, element := range expr {
 		switch getOperatorType(element) {
 		case openBracket:
